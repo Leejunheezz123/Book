@@ -1,0 +1,28 @@
+<script>
+    const users =[
+    {id:1, username:'dotm3434', userpw:'1111'},
+    {id:2, username:'rkwk2434', userpw:'1111'},
+];
+
+function _isUser(userid, cb){
+    setTimeout(function(){
+        var user=users.filter(function(v){
+            return v.userid ===useid
+        });
+        if(user.length ===0) cb('아이디를 찾을 수 없습니다');
+        else cb(null, user[0].userid);
+    })
+}
+
+    function isUser(userid) {
+        return new Promise(function(resolve, reject){
+        setTimeout(function() {
+                //resolve('ok')
+                reject('error')
+            },100)
+            });
+    }
+    isUser('booldook').then(function(r){console.log(r)})
+    .catch(function(err){ console.log(err)})
+
+</script>
