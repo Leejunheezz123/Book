@@ -1,31 +1,43 @@
-<%-include('../inc/head')  %> 
+<%-include('../inc/head'),{ css }  %> 
 <%-include('../inc/header')  %> 
 <div class="list-wrapper wrapper">
-    <%- include('../inc/book/title-bar',{title}) %> 
-    <table class="table table-hover table-striped text-center">
-    <thead class="thead-dakr">
+    <%- include('../inc/title-book') %> 
+    <table class="book-tbl table table-hover table-striped text-center">
+    <thead class="thead-dark">
         <tr>
-            <th>번호</th>
-            <th>도서명</th>
-            <th>저자</th>
-            <th>요약설명</th>
-            <th>등록일</th>
-            <th>상태</th>
+            <th><%=FIELD.NO %></th>
+            <th><%=FIELD.TITLE%></th>
+            <th><%=FIELD.WRITER %></th>
+            <th><%=FIELD.CONTENT %></th>
+            <th><%=FIELD.COVER %></th>
+            <th><%=FIELD.DATE %></th>
+            <th><%=FIELD.STATUS %></th>
         </tr>
     </thead>
     <tbody>
     <% for(let book of books) { %>
-    <tr>
+    <tr data-idx="<%= book.idx %>"data-lang="<%= LANG %>">
         <td><%=book.idx %> </td>
-        <td class="text-left"><%=book.title %> </td>
-        <td><%=book.writer ||'미상' %> </td>
-        <td class="text-left"><%=cutTail(book.content) %> </td>
-        <td><%=moment(book.createdAt).format('YYYY-MM-DD') %> </td>
-        <td><%=chgStatus(book.status) %> </td>
+        <td><%=book.title %></td>
+        <td><%=book.writer%> </td>
+        <td class="content-td">
+            <%if(book.icon) {%>
+                <img src="<%=book.icon%>" class="icon">
+                <% } %>               
+                <%=book.content %>&nbsp;
+        </td>
+        <td class="cover-td">
+            <%if(book.cover) {%>
+                <img src="<%=book.cover%>" class="cover">
+                <% } %>       
+        </td>
+        <td><%=book.createdAt %></td>
+        <td><%=book.status %></td>
     </tr>
     <% } %> 
     </tbody>
     </table>
+    <%- include('../inc/pager',{...pager}) %> 
 </div>
 
-<%-include('../inc/foot')  %> 
+<%-include('../inc/foot'), { js }  %> 

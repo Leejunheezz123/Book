@@ -1,15 +1,47 @@
 const path = require('path')
 const express = require('express')
 const router = express.Router()
-const { error } = require('../../modules/util-module')
+const { error, relPath } = require('../../modules/util-module')
+const { pool } = require('../../modules/mysql-module')
+const { NO_EXIST } = require('../../modules/lang-init')
 
 
 router.get('/',(req, res, next) => {
-    const title = '도서등록'
-    const description ='등록할 도서를 아래에서 입력하세요.'
+    req.app.locals.PAGE = 'CREATE'
     const js = 'book/form'
     const css = 'book/form'
-    res.status(200).render('book/form',{  title, js, css, description   })
+    const book = null
+    res.status(200).render('book/form',{   js, css,book   })
+})
+router.get('/:idx', async (req, res, next) => {
+    try{
+        const sql =`
+        SELECT B.*,
+        F.oriname AS ori, F.savename AS name, F.fieldname AS field,F.idx AS fid,
+        F.oriname AS ori2, F.savename AS name2, F.fieldname AS field2,F.idx AS fid2        
+        FROM books B
+        LEFT JOIN files F ON B.idx = F.fidx AND F.fieldname = 'C' AND F.status > '0'
+        LEFT JOIN files F2 ON B.idx = F2.fidx AND F2.fieldname = 'U' AND F2.status > '0'
+        WHERE B.idx=?
+        `
+        const values = [req.params.idx]
+        const [[book]] = await pool.execute(sql, values)
+
+        if(book){
+            const js = 'book/form'
+            const css = 'book/form'
+            book.cover = book.ori ? { ori: book.ori,  path: relPath(book.name),idx:book.fid } : null
+            book.upfile = book.ori2 ? { ori: book.ori2, idx:book.fid2 } : null
+            console.log(book.cover)
+            console.log(book.upfile)
+            res.status(200).render('book/form',{ js, css, book })
+        }
+        else next(error(400,NO_EXIST))
+    }
+    catch(err){
+        next(error(500,err))
+    }
+
 })
 
 module.exports = router

@@ -1,13 +1,33 @@
-
-function onSubmit(f){
-    var title = f.title.value.trim();
-    var writer = f.writer.value.trim();
-    var content = f.content.value.trim();
+document.saveForm.addEventListener('submit', onSubmit);
+function onSubmit(e){
+    e.preventDefault();
+    var title = this.title.value.trim();
+    var writer = this.writer.value.trim();
+    var content = this.content.value.trim();
     if(!title){
         alert('도서명을 입력하세요')
-        f.title.focus();
+        this.title.focus();
         return false;
     }
-    return true;
-    
+    this.submit(); 
 }
+
+// / 언어/book/api
+// / 언어/api/shop
+
+
+document.querySelector('#btRemoveCover').addEventListener('click',onRemoveFile);
+document.querySelector('#btRemoveFile').addEventListener('click',onRemoveFile);
+function onRemoveFile(e) {
+    var idx =this.dataset['idx'];
+    var parent = this.parentNode;
+    var host = 'http://127.0.0.1:3001';
+    axios.delete(host+'/book/file/'+idx).then(onSucess).catch(onError);
+function onSucess(r){
+    if(r.data.code === 200) parent.remove();
+}
+function onError(err){
+console.log(err);
+console.log(err.response);
+    } 
+} 

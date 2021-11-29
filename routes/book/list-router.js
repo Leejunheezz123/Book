@@ -2,25 +2,51 @@ const path = require('path')
 const moment = require('moment')
 const express = require('express')
 const router = express.Router()
-const { error, cutTail, chgStatus } = require('../../modules/util-module')
+const { error, cutTail, chgStatus, getIcon, relPath } = require('../../modules/util-module')
 const { pool } = require('../../modules/mysql-module')
+const createPager = require('../../modules/pager-init')
 
-router.get('/', async(req, res, next) => {
+
+router.get(['/','/:page'], async (req, res, next) => {
+    req.app.locals.PAGE = 'LIST'
+    let sql, values;
     try {
-        const sql='SELECT * FROM books ORDER BY idx DESC';
-        const [rs] =await pool.execute(sql)
+        sql ="SELECT COUNT(idx) FROM books WHERE status > '0'"
+        const [[cnt]] = await pool.execute(sql) 
+        const totalRecord =cnt['COUNT(idx)']
+        const page = Number(req.params.page || 1)
+        const pager= createPager(page, totalRecord,5,3)
+        
+        
+        sql=`
+        SELECT
+        B.*, F.fieldname, F.savename AS cover, F2.fidx, F2.savename AS icon
+        FROM books B
+        LEFT JOIN files F 
+        ON B.idx = F.fidx AND F.fieldname ='C' AND F.status > '0'
+        LEFT JOIN files F2
+        ON B.idx =F2.fidx AND F2.fieldname ='U' AND F2.status > '0'
+        WHERE B.status > '0'
+        ORDER BY B.idx DESC
+        LIMIT ?, ?
+        `
+        values = [pager.startIdx.toString(), pager.listCnt.toString()]
+        const [books] =await pool.execute(sql, values)
+        books.forEach(v => {
+            v.createdAt = moment(v.createdAt).format('YYYY-MM-DD')
+            v.content = cutTail(v.content)
+            v.writer = v.writer ||'미상'
+            v.status =chgStatus(v.status)
+            v.cover = v.cover ? relPath(v.cover) : null
+            v.icon = v.icon ? getIcon(v.icon) : null
+        })
+    const js = 'book/list' 
+    const css = 'book/list'
 
-        const ejs = {
-            title: '도서목록',
-        description:'등록된 도서들의 리스트 입니다.',
-        js: null,
-        css: null,
-        books:rs,
-        moment,
-        cutTail,
-        chgStatus
-    }
-        res.status(200).render('book/list', ejs)
+    
+    
+        res.status(200).render('book/list', {js,css,books,pager})
+        
     }
     catch(err){
         next(error(err))

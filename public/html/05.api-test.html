@@ -1,0 +1,12 @@
+<script src="/js/promise.polyfill/"></script>
+<script src="/js/axios.min.js"></script>
+<script>
+    axios
+    .delete('/book/file/3')
+    .then(function(r){
+        console.lor(r)
+    })
+    .catch(function(err) {
+        console.log(err.response)
+    })
+</script>
