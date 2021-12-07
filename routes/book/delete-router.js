@@ -1,8 +1,9 @@
 const path = require('path')
 const fs =require('fs-extra')
 const express = require('express')
+const createError = require('http-errors')
 const router = express.Router()
-const { error,moveFile } = require('../../modules/util-module')
+const { moveFile } = require('../../modules/util-module')
 const { pool } = require('../../modules/mysql-module')
 
 router.delete('/',async (req, res, next) => {
@@ -26,9 +27,8 @@ router.delete('/',async (req, res, next) => {
 
     }
     catch(err) {
-        next(error(500,err))
+        next(createError(err))
     }
-
 })
 
 module.exports = router 

@@ -16,13 +16,16 @@ function onSubmit(e){
 // / 언어/api/shop
 
 
-document.querySelector('#btRemoveCover').addEventListener('click',onRemoveFile);
-document.querySelector('#btRemoveFile').addEventListener('click',onRemoveFile);
+if(document.querySelector('#btRemoveCover'))
+    document.querySelector('#btRemoveCover').addEventListener('click',onRemoveFile);
+if(document.querySelector('#btRemoveFile'))
+    document.querySelector('#btRemoveFile').addEventListener('click',onRemoveFile);
 function onRemoveFile(e) {
+    console.log(this.dataset['idx'])
+    console.log(this.parentNode)
     var idx =this.dataset['idx'];
     var parent = this.parentNode;
-    var host = 'http://127.0.0.1:3001';
-    axios.delete(host+'/book/file/'+idx).then(onSucess).catch(onError);
+    axios.delete('/api/book/file/'+idx).then(onSucess).catch(onError);
 function onSucess(r){
     if(r.data.code === 200) parent.remove();
 }

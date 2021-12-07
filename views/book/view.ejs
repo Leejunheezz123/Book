@@ -1,7 +1,8 @@
 <%-include('../inc/head'),{ css }  %> 
 <%-include('../inc/header')  %> 
+<%- include('../inc/banner-book') %> 
 <div class="view-wrapper wrapper">
-    <%- include('../inc/title-book') %> 
+    <%- include('../inc/title-bar') %> 
     <table>
         <tbody>
             <tr>
@@ -50,9 +51,8 @@
     </table>
     <div class="btn-wrap py-3 d-flex">
         <a href="/<%=LANG%>/book" class="btn btn-primary"><%=BT.LIST %></a>
-        <button class="btn btn-success ml-auto mr-1" id="btUpdate"
-        data-idx="<%= book.idx %>"data-lang="<%= LANG %>"><%=BT.UPDATE %></button>
-        <button class="btn btn-danger " id="btDelete" data-msg="<%=MSG.DELETE%>"><%= BT.DELETE %></button>
+        <button class="btn btn-success ml-auto mr-1" id="btUpdate"data-idx="<%= book.idx %>"data-lang="<%= LANG %>"><%=BT.UPDATE %></button>
+        <button class="btn btn-danger" id="btDelete" data-msg="<%=MSG.DELETE%>"><%= BT.DELETE %></button>
     </div>
     <form action="/<%= LANG %>/book" method="POST" name="deleteForm">
     <input type="hidden" name="_method" value="DELETE">

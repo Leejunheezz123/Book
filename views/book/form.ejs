@@ -1,9 +1,10 @@
 <%-include('../inc/head'),{ css }  %>  
 <%-include('../inc/header')  %> 
-<sript src="/js/promise.polyfill.min.js"></sript>
-<sript src="/js/axios.min.js"></sript>
+<script src="/js/promise.polyfill.min.js"></script>
+<script src="/js/axios.min.js"></script>
+<%- include('../inc/banner-book') %> 
 <div class="form-wrapper wrapper">
-    <%- include('../inc/title-book') %> 
+    <%- include('../inc/title-bar') %> 
     <form action="/<%= LANG %>/book"method="POST" name="saveForm" enctype="multipart/form-data">
         <% if(book) { %>
             <input type="hidden" name="_method" value="PUT">
@@ -37,7 +38,7 @@
                 <td class="content">
                     <% if(book && book.cover) { %>
                         <div class="file-wrap">
-                            <img src="<%= book.cover.path %>" alt="<%= book.cover.ori %>" class="img">
+                            <img src="<%= book.cover.path %>" alt="<%= book.cover.ori %>"class="img">
                             <div class="file"><%= book.cover.ori %></div>
                             <button type="button" class="btn btn-sm btn-danger"
                                 data-idx="<%= book.cover.idx %>" id="btRemoveCover">삭제</button>
@@ -48,12 +49,11 @@
             </tr>
             <tr>
                 <td class="title"><%=FIELD.UPFILE %></td>
-                <td class="content">
+                <td class="content"> 
                     <% if(book && book.upfile) { %>
                         <div class="file-wrap">
-                            <div class="file"><%=book.upfile.ori%></div>
-                            <button type="button" class="btn btn-sm btn-danger"
-                                data-idx="<%= book.upfile.idx %>"data-idx="<%= book.upfile.idx %>"id="btRemoveFile">삭제</button>
+                            <div class="file"><%= book.upfile.ori %></div>
+                            <button type="button" class="btn btn-sm btn-danger" data-idx="<%= book.upfile.idx %>" id="btRemoveFile">삭제</button>
                         </div>
                     <% }  %>
                     <input type="file" name="upfile" class="form-control-file">
@@ -63,7 +63,7 @@
     </table>
     <div class="btn-wrap p-3 text-center">
         <button class="btn btn-success" id="btSave">
-        <%= book ? BT.UPDATE:BT.CREATE %> 
+        <%= book ? BT.UPDATE : BT.CREATE %> 
         </button>
         <button class="btn btn-danger" type="reset" ><%= BT.RESET %></button>
     </div>

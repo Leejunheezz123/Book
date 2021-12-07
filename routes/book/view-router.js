@@ -1,8 +1,9 @@
 const path = require('path')
 const express = require('express')
+const createError = require('http-errors')
 const router = express.Router()
 const moment = require('moment')
-const { error,chgStatus, relPath, isImg } = require('../../modules/util-module')
+const { chgStatus, relPath, isImg } = require('../../modules/util-module')
 const { pool } = require('../../modules/mysql-module')
 const { NO_EXIST } = require('../../modules/lang-init')
 
@@ -38,11 +39,11 @@ try{
 
     res.status(200).render('book/view',{css,js,book})
     }
-    else next(error(400,NO_EXIST))
+    else next(createError(400,NO_EXIST))
     
 }
 catch(err){
-    next(error(500,err))
+    next(createError(err))
 
 }
 })

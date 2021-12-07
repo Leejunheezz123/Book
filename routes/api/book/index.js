@@ -1,8 +1,8 @@
 const path = require('path')
 const express = require('express')
 const router = express.Router()
-const { error } = require('../../modules/util-module')
-const { pool } = require('../../modules/mysql-module')
+const { error } = require('../../../modules/util-module')
+const { pool } = require('../../../modules/mysql-module')
 const fileRouter =require('./file-router')
 
 router.use('/file', fileRouter)

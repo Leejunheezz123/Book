@@ -1,7 +1,8 @@
 const path = require('path')
 const express = require('express')
+const createError = require('http-errors')
 const router = express.Router()
-const { error, relPath } = require('../../modules/util-module')
+const { relPath } = require('../../modules/util-module')
 const { pool } = require('../../modules/mysql-module')
 const { NO_EXIST } = require('../../modules/lang-init')
 
@@ -18,7 +19,7 @@ router.get('/:idx', async (req, res, next) => {
         const sql =`
         SELECT B.*,
         F.oriname AS ori, F.savename AS name, F.fieldname AS field,F.idx AS fid,
-        F.oriname AS ori2, F.savename AS name2, F.fieldname AS field2,F.idx AS fid2        
+        F2.oriname AS ori2, F2.savename AS name2, F2.fieldname AS field2,F2.idx AS fid2        
         FROM books B
         LEFT JOIN files F ON B.idx = F.fidx AND F.fieldname = 'C' AND F.status > '0'
         LEFT JOIN files F2 ON B.idx = F2.fidx AND F2.fieldname = 'U' AND F2.status > '0'
@@ -36,10 +37,10 @@ router.get('/:idx', async (req, res, next) => {
             console.log(book.upfile)
             res.status(200).render('book/form',{ js, css, book })
         }
-        else next(error(400,NO_EXIST))
+        else next(createError(400, NO_EXIST))
     }
     catch(err){
-        next(error(500,err))
+        next(createError(err))
     }
 
 })
