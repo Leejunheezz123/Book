@@ -49,7 +49,22 @@ function verifyUserid(){
         verifyFalse(useridEl, useridTxt, userid === '' ? ERR.ID_NULL : ERR.ID_LEN);
         return false; 
         }
-        else{
+        else {
+            axios
+            .get('/api/auth/verify',{ params:{ key: 'userid', value: userid} })
+            .then(function(r) {
+            if(r.data.isUsed) {
+                verifyFalse(useridEl, useridTxt, ERR.ID_TAKEN)
+                return false;
+            }
+            else {
+                verifyTrue(useridEl, useridTxt, ERR.ID_OK)
+                return true;
+            }
+            })
+            .catch(function(err){
+            verifyFalse(useridEl, useridTxt, err.response.data.msg)
+            })
         verifyTrue(useridEl, useridTxt, ERR.ID_OK);  
         return true;
     }
@@ -90,23 +105,15 @@ function verifyPasswdEqual(){
         return false;
     }
     if(passwd !== passwd2){
-        passwdEl.classList.add('error');
-        passwd2El.classList.add('error');
-        passwdTxt.classList.add('error');
-        passwd2Txt.classList.add('error');
-        passwdTxt.innerHTML = ERR.PW_TAKEN;
-        passwd2Txt.innerHTML = ERR.PW_TAKEN;
+        verifyFalse(passwdEl, passwdTxt, ERR.PW_TAKEN);
+        verifyFalse(passwd2El, passwd2Txt, ERR.PW_TAKEN);
         return false;
         }
         else{
-        passwdEl.classList.remove('error');
-        passwd2El.classList.remove('error');
-        passwdTxt.innerHTML = '';
-        passwd2Txt.innerHTML = '';
+        verifyTrue(passwdEl, passwdTxt);
+        verifyTrue(passwd2El, passwd2Txt);
         return true;
-
-        }
-    return true;
+    }
 }
 
 function verifyUsername(){
@@ -150,13 +157,16 @@ function verifyReset(el, elTxt) {
 }
 
 function verifyFalse(el, elTxt,msg){
+    el.classList.remove('active')
+    el.classList.add('error')
     elTxt.classList.add('error')
     elTxt.innerHTML= msg;
-    el.classList.add('error')
 }
 
 function verifyTrue(el, elTxt, msg){
     el.classList.add('active'); 
+    el.classList.remove('error'); 
+    elTxt.classList.remove('error'); 
     elTxt.innerHTML = msg ||'' ;
 }
 
