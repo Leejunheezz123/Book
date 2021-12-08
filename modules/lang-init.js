@@ -10,7 +10,8 @@ module.exports =_lang=>{
                 JOIN:{
                     ID_NULL : '아이디를 입력하세요.',
                     ID_LEN : '아이디는 6자 이상 24자 이하 입니다.',
-                    ID_TAKEN: '사용할 수 없는 아이디 입니다.',
+                    ID_VALID : '아이디는 영문, 숫자로 구성되어야 합니다.',
+                    ID_TAKEN: '중복되서 사용할 수 없는 아이디 입니다.',
                     ID_OK: '사용 가능한 아이디 입니다.',
                     PW_NULL : '패스워드를 입력하세요.',
                     PW_LEN : '패스워드는 6자 이상 24자 이하 입니다.',
@@ -19,7 +20,8 @@ module.exports =_lang=>{
                     PW_TAKEN: '패스워드가 일치하지 않습니다.',
                     NAME_NULL : '이름을 입력하세요.',
                     EMAIL_NULL : '이메일을 입력하세요.',
-                    EMAIL_TAKEN : '이메일 형식이 올바르지 않습니다.',
+                    EMAIL_VALID : '이메일 형식이 올바르지 않습니다.',
+                    EMAIL_TAKEN : '중복된 이메일 입니다. 다른 이메일을 사용해주세요.',
 
                     
                 }
@@ -95,7 +97,8 @@ module.exports =_lang=>{
                 JOIN:{
                     ID_NULL : 'Enter your ID',
                     ID_LEN : 'The ID is 6 or more and 24 or less.',
-                    ID_TAKEN: 'This ID is not available.',
+                    ID_VALID : 'ID must consist of letters and numbers',
+                    ID_TAKEN: 'This is a duplicate ID. please use a different ID',
                     ID_OK: 'Username is available.',
                     PW_NULL : 'Enter your password.',
                     PW_LEN : 'The password is more than 6 characters and less than 24 characters.',
@@ -104,7 +107,8 @@ module.exports =_lang=>{
                     PW_TAKEN: 'The passwords do not match.',
                     NAME_NULL : 'Enter your name.',
                     EMAIL_NULL : 'Enter your email.',
-                    EMAIL_TAKEN : 'The email format is not correct.',
+                    EMAIL_VALID : 'The email format is not correct.',
+                    EMAIL_TAKEN : 'This is a duplicate email. please use a different email',
                     
                     
                 }
