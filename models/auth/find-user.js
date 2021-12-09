@@ -41,4 +41,4 @@ const isVerify = async (key, value)=>{
 
 
 
-module.exports = { findUser,findAllUser,isVerify }
+module.exports = { findUser,findAllUser,isVerify } 
