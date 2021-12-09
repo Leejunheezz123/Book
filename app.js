@@ -1,14 +1,16 @@
 
 /*************** global init **************/
+require('dotenv').config()
 const port = process.env.PORT
 const path = require('path')
 const express = require('express')
 const app = express()
 const methodInit = require('./modules/method-init')
+const logger = require('./middelwares/mogan-mw')
+const session = require('./middelwares/session-mw')
 
 
 /*************** server init **************/
-require('dotenv').config()
 require('./modules/server-init')(app, process.env.PORT)
 
 /************** view engine ***************/
@@ -19,14 +21,19 @@ app.locals.tabTitle ='Express 게시판'
 
 
 /*************** middleware ***************/
+app.use(logger)
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(methodInit())
+app.use(session(app))
 
 
 /*************** static init **************/
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/uploads', express.static(path.join(__dirname, 'storages')))
+
+
+
 
 
 /*************** router init **************/
