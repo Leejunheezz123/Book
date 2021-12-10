@@ -6,6 +6,7 @@ const router = express.Router()
 const { moveFile } = require('../../modules/util-module')
 const { pool } = require('../../modules/mysql-module')
 
+
 router.delete('/',async (req, res, next) => {
     let sql
     try{
