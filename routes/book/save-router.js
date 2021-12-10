@@ -5,9 +5,9 @@ const router = express.Router()
 const { moveFile } = require('../../modules/util-module')
 const { pool } = require('../../modules/mysql-module')
 const uploader = require('../../middelwares/multer-book-mw')
-const { isUser, isGuest} = require('../../middelwares/auth-mw')
+const { isUser, isGuest,isMyBook} = require('../../middelwares/auth-mw')
 
-router.post('/',isUser,uploader.fields([{name:'cover'},{name:'upfile'}]), async (req, res, next) => {
+router.post('/',isUser,isMyBook('body','U'),uploader.fields([{name:'cover'},{name:'upfile'}]), async (req, res, next) => {
     let sql, values
     try{
         const { title, writer, content, _method, idx } = req.body
