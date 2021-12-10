@@ -16,8 +16,6 @@ const expressSession= session({
         httpOnly:true
     },
 })
-console.log(new MySQLStore(storeOptions))
-
 module.exports = app =>{
     app.set('trust proxy',1)
     return expressSession
