@@ -5,16 +5,17 @@ const router = express.Router()
 const { relPath } = require('../../modules/util-module')
 const { pool } = require('../../modules/mysql-module')
 const { NO_EXIST } = require('../../modules/lang-init')
+const {isUser, isGuest} = require('../../middelwares/auth-mw')
 
 
-router.get('/',(req, res, next) => {
+router.get('/',isUser,(req, res, next) => {
     req.app.locals.PAGE = 'CREATE'
     req.app.locals. js = 'book/form'
     req.app.locals. css = 'book/form'
     req.app.locals. book = null
     res.status(200).render('book/form')
 })
-router.get('/:idx', async (req, res, next) => {
+router.get('/:idx',isUser, async (req, res, next) => {
     req.app.locals.PAGE ='UPDATE'
     req.app.locals. js = 'book/form'
     req.app.locals. css = 'book/form'

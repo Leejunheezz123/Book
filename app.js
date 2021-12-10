@@ -8,6 +8,7 @@ const app = express()
 const methodInit = require('./modules/method-init')
 const logger = require('./middelwares/mogan-mw')
 const session = require('./middelwares/session-mw')
+const locals = require('./middelwares/locals-mw')
 
 
 /*************** server init **************/
@@ -26,11 +27,16 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(methodInit())
 app.use(session(app))
+app.use(locals)
+
 
 
 /*************** static init **************/
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/uploads', express.static(path.join(__dirname, 'storages')))
+
+/*************** logger init **************/
+app.use(logger)
 
 
 
