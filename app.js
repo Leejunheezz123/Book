@@ -1,14 +1,15 @@
 
 /*************** global init **************/
 require('dotenv').config()
-const port = process.env.PORT
 const path = require('path')
 const express = require('express')
 const app = express()
-const methodInit = require('./modules/method-init')
-const logger = require('./middelwares/mogan-mw')
-const session = require('./middelwares/session-mw')
-const locals = require('./middelwares/locals-mw')
+
+const method = require('./middlewares/method-mw')
+const logger = require('./middlewares/mogan-mw')
+const session = require('./middlewares/session-mw')
+const locals = require('./middlewares/locals-mw')
+const langMW = require('./middlewares/lang-mw')
 
 
 /*************** server init **************/
@@ -18,14 +19,13 @@ require('./modules/server-init')(app, process.env.PORT)
 app.set('view engine', 'ejs')
 app.set('views', './views')
 app.locals.pretty = true
-app.locals.tabTitle ='Express 게시판'
 
 
 /*************** middleware ***************/
 app.use(logger)
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(methodInit())
+app.use(method())
 app.use(session(app))
 app.use(locals)
 
@@ -43,7 +43,6 @@ app.use(logger)
 
 
 /*************** router init **************/
-const langMW = require('./middelwares/lang-mw')
 const bookRouter = require('./routes/book')
 const apiBookRouter = require('./routes/api/book')
 const authRouter = require('./routes/auth')

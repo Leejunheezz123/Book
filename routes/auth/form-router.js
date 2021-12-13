@@ -4,7 +4,7 @@ const router = express.Router()
 const createError = require('http-errors')
 const { alert } = require('../../modules/util-module')
 const {createUser} = require('../../models/auth')
-const { isUser, isGuest} = require('../../middelwares/auth-mw')
+const { isUser, isGuest} = require('../../middlewares/auth-mw')
 
 router.get('/',isGuest,(req, res, next) => {
     //join 창 보여주기

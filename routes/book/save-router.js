@@ -1,50 +1,49 @@
 
+
+
 const express = require('express')
-const createError = require('http-errors')
 const router = express.Router()
+const createError = require('http-errors')
 const { moveFile } = require('../../modules/util-module')
 const { pool } = require('../../modules/mysql-module')
-const uploader = require('../../middelwares/multer-book-mw')
-const { isUser, isGuest,isMyBook} = require('../../middelwares/auth-mw')
+const uploader = require('../../middlewares/multer-book-mw')
+const { isUser, isGuest, isMyBook } = require('../../middlewares/auth-mw')
+const { findBookFile, updateFile, createFile } = require('../../models/file')
+const { updateBook, createBook } = require('../../models/book')
 
-router.post('/',isUser,isMyBook('body','U'),uploader.fields([{name:'cover'},{name:'upfile'}]), async (req, res, next) => {
-    let sql, values
-    try{
-        const { title, writer, content, _method, idx } = req.body
-        const isUpdate = (_method === 'PUT' && idx)
-        sql = isUpdate ? " UPDATE books " : " INSERT INTO books "
-        sql += " SET fidx=?, title=?, writer=?, content=? "
-        sql += isUpdate ? " WHERE idx= "+idx : ""
-        values =[req.session.user.idx,title, writer, content]
-        const [rs] = await pool.execute(sql, values)
 
-        
-        
-        if(req.files){
-        let fieldname;
-        for(let [k,[v]] of Object.entries(req.files)) {
-            fieldname = k.substr(0, 1 ).toUpperCase()
-            if(isUpdate) {
-            sql= `SELECT idx, savename FROM files WHERE fidx =? AND fieldname=? AND status=?`
-            values = [idx, fieldname, '1']
-            let [rsf] = await pool.execute(sql, values)
-            if(rsf.length>0){
-                sql=" UPDATE files SET status ='0' WHERE idx ="+rsf[0].idx
-                await pool.execute(sql)
-                await moveFile(rsf[0].savename)
-                }
-            }
-        sql = " INSERT INTO files SET oriname=?, savename=?, mimetype=?, size=?, fieldname=?, fidx=? "
-        values = [v.originalname, v.filename, v.mimetype, v.size, fieldname, (isUpdate ? idx : rs.insertId)]
-        await pool.execute(sql, values)
-        }
-        res.redirect(`/${req.lang}/book`)
-        }
-    }
-    
-    catch(err){ 
-        next(createError(err))
-    }
+router.post('/', isUser, uploader.fields([{name: 'cover'}, {name: 'upfile'}]), isMyBook('body', 'U'), async (req, res, next) => {
+	try {
+		let book = { ...req.body, fidx: req.session.user.idx }
+		let isUpdate = book._method === 'PUT' && book.idx
+		const { idx: bookIdx } = isUpdate ? await updateBook(book) : await createBook(book)
+		
+		if(req.files) {
+			let fieldname;
+			for(let [k, [v]] of Object.entries(req.files)) {
+				fieldname = k.substr(0, 1).toUpperCase()
+				if(isUpdate) { // 기존파일 처리
+					let { file } = await findBookFile({ fidx: bookIdx, fieldname, status: '1' })
+					if(file) {
+						await updateFile(file.idx, [['status', '0']])
+						await moveFile(file.savename)
+					}
+				}
+				await createFile({
+					oriname: v.originalname,
+					savename: v.filename,
+					mimetype: v.mimetype,
+					size: v.size,
+					fieldname, 
+					fidx: bookIdx 
+				})
+			}
+			res.redirect(`/${req.lang}/book`)
+		}
+	}
+	catch(err) {
+		next(createError(err))
+	}
 })
 
-module.exports = router 
+module.exports = router

@@ -4,26 +4,20 @@ const express = require('express')
 const createError = require('http-errors')
 const router = express.Router()
 const { moveFile } = require('../../modules/util-module')
-const { pool } = require('../../modules/mysql-module')
+const {updateBookStatus} = require('../../models/book')
+const {updateFileStatus,findBookFiles} = require('../../models/file')
+const {isUser,isGuest, isMyBook} = require('../../middlewares/auth-mw')
 
 
-router.delete('/',async (req, res, next) => {
+router.delete('/',isUser,isMyBook('body'),async (req, res, next) => {
     let sql
     try{
-        //const sql ="DELETE FROM books WHERE idx=?"
-        sql = "UPDATE books SET status='0' WHERE idx=" +req.body.idx
-        await pool.execute(sql)
-
-        sql = "UPDATE files SET status='0' WHERE fidx="+req.body.idx
-        await pool.execute(sql)
-
-        sql = "SELECT savename FROM files WHERE fidx="+req.body.idx
-        const [rs] = await pool.execute(sql)
-
-        for(let {savename} of rs){
+        await updateBookStatus(req.body.idx)
+        await updateFileStatus(req.body.idx)
+        const {files} = await findBookFiles(req.body.idx)
+        for(let {savename} of files){
             await moveFile(savename)
         }
-
         res.redirect(`/${req.lang}/book`)
 
     }
