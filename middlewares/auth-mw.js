@@ -1,5 +1,5 @@
 const { alert} = require('../modules/util-module')
-const {pool} = require('../modules/mysql-module')
+const {findMyBook} = require('../models/book')
 
 
 const isUser = (req, res, next) => {
@@ -19,9 +19,8 @@ const isMyBook = (name,mode) =>{
         const fidx = req.user.idx
         if(mode ==='U' && _method !=='PUT') next()
         else{
-            sql = " SELECT * FROM books WHERE idx=? AND fidx=? "
-            const [r] = await pool.execute(sql,[idx,fidx])
-            if(r.length) next()
+            const {success} = await findMyBook(idx,fidx)
+            if(success) next()
             else res.send(alert('정상적인 접근이 아닙니다. -.-'))
         }
     }

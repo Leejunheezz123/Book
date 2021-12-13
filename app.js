@@ -4,6 +4,8 @@ require('dotenv').config()
 const path = require('path')
 const express = require('express')
 const app = express()
+const passport = require('passport')
+const passportModule = require('./passport')
 
 const method = require('./middlewares/method-mw')
 const logger = require('./middlewares/mogan-mw')
@@ -27,13 +29,25 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(method())
 app.use(session(app))
-app.use(locals)
+
 
 
 
 /*************** static init **************/
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/uploads', express.static(path.join(__dirname, 'storages')))
+
+/*************** passport ***************/
+passportModule(passport)
+app.use(passport.initialize())
+app.use(passport.session())
+app.use((req, res, next )=>{
+    console.log(req.user); next();
+})
+
+/*************** locals ***************/
+app.use(locals)
+
 
 /*************** logger init **************/
 app.use(logger)

@@ -60,9 +60,16 @@ catch(err){
 
 }
 
+const findMyBook = async(idx, fidx) => {
+try{
+    let sql = " SELECT COUNT(idx) FROM books WHERE idx=? AND fidx=? "
+    const [[count]] = await pool.execute(sql, [idx, fidx])
+    return { success: count['COUNT(idx)'] ? true : false}
 
+}
+catch(err){
+    return { success: false, err}
+}
+}
 
-
-
-
-module.exports= {findBook,findBookCount,findBooks}
+module.exports= {findBook,findBookCount,findBooks,findMyBook}
