@@ -32,11 +32,19 @@ const findAllUser = async (order='ASC') => {
     
 
 }
-const isVerify = async (key, value)=>{
+const existUser = async (key, value)=>{
     const sql = ` SELECT * FROM users WHERE ${key}=? `
     const [rs] = await pool.execute(sql, [value])
-    console.log(rs)
-    return rs.length ? true : false
+    return rs.length ? {success:true, idx: rs[0].idx} : {success: false, idx:null}
+}
+
+const findSnsUser= async (userid)=>{
+    try{
+        let sql = "SELECT COUNT(idx) FROM"
+    }
+    catch(err){
+    throw new Error(err)
+    }
 }
 
 const loginUser = async(userid, passwd)=>{
@@ -59,4 +67,4 @@ const loginUser = async(userid, passwd)=>{
 
 }
 
-module.exports = { findUser,findAllUser,isVerify,loginUser } 
+module.exports = { findUser,findAllUser,existUser,loginUser,findSnsUser } 
