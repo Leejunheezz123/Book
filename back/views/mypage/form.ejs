@@ -1,0 +1,97 @@
+<%-include('../inc/head'),{ css }  %>  
+<%-include('../inc/header')  %> 
+<script src="/js/promise.polyfill.min.js"></script>
+<script src="/js/axios.min.js"></script>
+<script src="/js/validator.min.js"></script>
+
+<%- include('../inc/banner-auth') %> 
+<div class="form-wrapper wrapper">
+    <%- include('../inc/title-bar') %> 
+    <form action="/<%= LANG %>/myapge/user"method="POST" name="saveForm">
+    <table>
+        <tbody>
+            <!-- 아이디 -->
+            <tr>
+                <td class="title"><%=MYPAGE.USERID%></td>
+                <td class="content">
+                    <input type="text" name="userid" value="<%= userid %>"class="form-control"readonly>
+                </td>
+            </tr>
+            <!-- 패스워드 -->
+            <tr>
+                <td class="title require"><%=MYPAGE.PASSWD%></td>
+                <td class="content">
+                    <input type="password" name="passwd" class="form-control" placeholder="<%=MYPAGE.PASSWD%>" 
+                    autofocus>
+                    <div class="valid passwd"></div>
+                </td>
+            </tr>
+            <!-- 패스워드 확인 -->
+            <tr>
+                <td class="title require"><%=MYPAGE.PASSWD2%></td>
+                <td class="content">
+                    <input type="password" name="passwd2" class="form-control" placeholder="<%=MYPAGE.PASSWD2%>" 
+                    autofocus>
+                    <div class="valid passwd2"></div>
+                </td>
+            </tr>
+            <!-- 사용자 이름 -->
+            <tr>
+                <td class="title require"><%=MYPAGE.USERNAME %></td>
+                <td class="content">
+                    <input type="text" name="username" value="<%= username %> "class="form-control" placeholder="<%=MYPAGE.USERNAME %>">
+                    <div class="valid username"></div>
+                </td>
+            </tr> 
+            <!-- 이메일 -->
+            <tr>
+                <td class="title require"><%=MYPAGE.EMAIL %></td>
+                <td class="content">
+                    <input type="text" name="email" value="<%= email %> "class="form-control" placeholder="<%=MYPAGE.EMAIL %>">
+                    <div class="valid email"></div>
+                </td> 
+            </tr>
+        </tbody>
+    </table>
+    <div class="btn-wrap p-3 text-center">
+        <button class="btn btn-success" id="btSave">
+        <%=BT.UPDATE %> 
+        </button>
+        <button type="button" class="btn btn-danger" onclick="history.go(-1)"><%= BT.BACK %></button>
+    </div>
+    </form>
+    <hr>
+    <form action="/<%= LANG %>/myapge/user/api"method="POST" name="apiForm" class="mt-3"></form>
+    <tbody>
+        <table>
+                <tr>
+                <td class="title require"><%=MYPAGE.DOMAIN %></td>
+                <td class="content">
+                    <input type="text" name="domain" value="<%= domain %> "class="form-control" placeholder="<%=MYPAGE.DOMAIN %>">
+                    <div class="valid domain"></div>
+                </td> 
+            </tr>
+                            <tr>
+                <td class="title require"><%=MYPAGE.APIKEY %></td>
+                <td class="content form-inline">
+                    <input type="text" name="apikey"
+                    value="<%= apikey %> "class="form-control flex-grow-1 mr-2" placeholder="<%=MYPAGE.APIKEY %>" readonly>
+                    <button type="button"class="btn btn-warning"><%=BT.APIKEY %></button>
+                    <div class="valid apikey"></div>
+                </td> 
+            </tr>
+    </tbody>
+</table>
+
+        <div class="btn-wrap p-3 text-center">
+        <button class="btn btn-success" id="btSave">
+        <%=BT.UPDATE %> 
+        </button>
+        <button type="button" class="btn btn-danger" onclick="history.go(-1)"><%= BT.BACK %></button>
+    </div>
+</div>
+<%-include('../inc/foot'),{ js } %>   
+
+
+
+

@@ -79,6 +79,18 @@ module.exports =_lang=>{
                 PASSWD2 :' 패스워드 확인',
                 USERNAME: '이름',
                 EMAIL: '이메일',
+                
+            },
+            MYPAGE:{
+                USERID   :'아이디',
+                DOMAIN   :'인증 플랫폼',
+                APIKEY   :'인증키',
+                PASSWD : '패스워드',
+                PASSWD2 :' 패스워드 확인',
+                USERNAME: '이름',
+                EMAIL: '이메일',
+                TITLE: '회원 수정',
+                DESC :'수정할  내용을 아래에서 변경하세요.',
             },
             BT:{
                 UPDATE  :'수정',
@@ -88,6 +100,9 @@ module.exports =_lang=>{
                 RESET:'다시 등록',
                 JOIN:'회원 가입',
                 LOGIN:'회원 로그인',
+                BACK:'뒤로가기',
+                APIKEY: '인증키 생성/변경',
+
 
             },
             MSG: {
@@ -172,6 +187,18 @@ module.exports =_lang=>{
                     USERNAME: 'User name',
                     EMAIL: 'Email',
                 },
+                
+                MYPAGE:{
+                    USERID   :'User id',
+                    DOMAIN   :'Auth Platform',
+                    APIKEY   :'Auth key',
+                    PASSWD : 'Password',
+                    PASSWD2 :' Password confirm',
+                    USERNAME: 'User name',
+                    EMAIL: 'Email',
+                    TITLE: 'user Information Update',
+                    DESC :'Change the contents of the user Information to be edited below',
+                },
                 BT:{
                     UPDATE :'UPDATE',
                     DELETE :'DELETE',
@@ -179,7 +206,9 @@ module.exports =_lang=>{
                     LIST :'LIST',
                     RESET:'RESET',   
                     JOIN:'JOIN',   
-                    LOGIN:'LOGIN',   
+                    LOGIN:'LOGIN',  
+                    BACK:'BACK',  
+                    APIKEY:'Auth-key create/update',  
                 },
                 MSG: {
                     DELETE : 'Are you sure you want to delete it?'
