@@ -8,9 +8,6 @@ const createPager = require('../../modules/pager-init')
 const { findBookCount, findBooks } = require('../../models/book')
 
 router.get(['/', '/:page'], async (req, res, next) => {
-	req.app.locals.PAGE = 'LIST'
-	req.app.locals.js = 'book/list'
-	req.app.locals.css = 'book/list'
 	try {
 		const { count: totalRecord } = await findBookCount()
 		const page = Number(req.params.page || 1)
@@ -24,11 +21,13 @@ router.get(['/', '/:page'], async (req, res, next) => {
 			v.cover = v.cover ? relPath(v.cover) : null
 			v.icon = v.icon ? getIcon(v.icon) : null
 		})
-		res.status(200).render('book/list', { books, pager })
+		res.status(200).json({ books, pager })
 	}
 	catch(err) {
 		next(createError(err))
 	}
 })
 
+
 module.exports = router
+

@@ -9,7 +9,7 @@ const findBookCount = async (isStatus = true) => {
 		return { success: true, count: count['COUNT(idx)'] }
 	}
 	catch(err) {
-		throw new Error(err)
+		return { success: false, err }
 	}
 }
 
@@ -27,11 +27,12 @@ const findBook = async idx => {
 		return { success: false, book }
 	}
 	catch(err) {
-		throw new Error(err)
+		return { success: false, err }
 	}
 }
 
 const findBooks = async (startIdx, listCnt) => {
+	
 	try {
 		let sql = `
 		SELECT B.*, F.savename AS cover, F2.savename AS icon  
@@ -45,7 +46,7 @@ const findBooks = async (startIdx, listCnt) => {
 		return { success: true, books }
 	}
 	catch(err) {
-		throw new Error(err)
+		return { success: false, err }
 	}
 }
 
@@ -56,7 +57,7 @@ const findMyBook = async (idx, fidx) => {
 		return { success: count['COUNT(idx)'] ? true : false }
 	}
 	catch(err) {
-		throw new Error(err)
+		return { success: false, err }
 	}
 } 
 
