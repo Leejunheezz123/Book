@@ -38,7 +38,7 @@ body {
 }
 
 .header-wrapper .navi-wrap .navi:hover {
-    background-color: mistyrose;
+    background-color: rgb(225, 241, 255);
     color: darkslategrey;
 }
 
@@ -87,7 +87,7 @@ body {
 .header-wrapper .bt-navi .navi-sub {
     position: absolute;
     width: 100%;
-    background-color: #863b61;
+    background-color: #3b8667;
     left: 0;
     top: 3em;
     display: none;
@@ -101,7 +101,7 @@ body {
 }
 
 .header-wrapper .bt-navi .navi-sub .sub:hover {
-    background-color: #a34a77;
+    background-color: #4a9da3;
 }
 
 .title-wrapper {
