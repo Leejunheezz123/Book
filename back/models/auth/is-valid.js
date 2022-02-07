@@ -14,5 +14,5 @@ module.exports = (user) => {
 	else if (!validator.isEmail(email)) {
 		return false
 	}
-	else return true;
+	else return true
 }

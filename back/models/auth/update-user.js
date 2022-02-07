@@ -24,7 +24,7 @@ const updateUser = async ({ idx, passwd, username, email, sql, values }) => {
 	}
 	catch(err) {
 		throw new Error(err)
-	} 
+	}
 }
 
 /* 

@@ -32,7 +32,7 @@ router.post('/', isUser, async (req, res, next) => {
 	catch(err) {
 		next(createError(err))
 	}
-}) 
+})
 
 // apikey 발행 POST: /mypage/user/api
 router.post('/api', isUser, async (req, res, next) => {

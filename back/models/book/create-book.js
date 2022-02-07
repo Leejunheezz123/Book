@@ -10,7 +10,7 @@ const createBook = async book => {
         return { success:true, idx: rs.insertId }
     }
     catch(err){
-        return {success: false, err}
+        throw new Error(err)
     }
 }
 

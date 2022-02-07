@@ -11,7 +11,7 @@ const updateBook = async book => {
             : {success: false, idx, msg:'Error'}
         }
         catch(err){
-            return {success: false, err}
+            throw new Error(err)
     }
 }
 
@@ -24,7 +24,7 @@ const updateBookStatus = async (idx, status=0) => {
         : {success: false, idx, msg:'Error'}
     }
     catch(err){
-        return {success: false, err}
+        throw new Error(err)
 }
 }
 
